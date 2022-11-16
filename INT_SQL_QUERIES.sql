@@ -222,6 +222,15 @@ FROM(
 WHERE X.rnk_maks = 1 OR X.salary=X.min
 ORDER BY dept_name 
 
+/* ANOTHER METHOD FOR FETCHING THE DATA */
+SELECT DISTINCT   E1.dept_name,
+FIRST_VALUE(E1.emp_name) OVER (PARTITION BY E1.dept_name ORDER BY E1.salary DESC) AS high_inc,
+LAST_VALUE(E1.emp_name) OVER (PARTITION BY E1.dept_name ORDER BY E1.salary DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) AS low_inc
+FROM employee E1 
+GROUP BY E1.dept_name,E1.salary,E1.emp_name
+
+
+
 /*Q4*/
 /* From the doctors table, fetch the details of doctors who work in the same hospital but in different specialty */
 
